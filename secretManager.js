@@ -1,7 +1,7 @@
 "use strict";
 const AWS = require("aws-sdk");
 
-const secretName = "SECRET-KEY";
+const secretName = "test/lambda-authorizer";
 const client = new AWS.SecretsManager({
   region: "us-east-1",
 });

@@ -1,7 +1,7 @@
 "use strict";
 
 const jwt = require("jsonwebtoken");
-// const getCredentials = require("./secretManager");
+const getCredentials = require("./secretManager");
 
 function extractTokenFromHeader(e) {
   if (
@@ -16,7 +16,7 @@ function extractTokenFromHeader(e) {
 
 async function validateToken(token, event, callback) {
   try {
-    const secret = "MY-SECRET"; //await getCredentials();
+    const secret = await getCredentials();
 
     jwt.verify(token, secret, { expiresIn: 3600 });
 
