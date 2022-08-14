@@ -14,12 +14,10 @@ provider:
       customAuthorizer:
         type: request
         functionName: custom-authorizer-http
-  iam:
-    role:
-      statements:
-        - Effect: "Allow"
-          Action: "ssm:GetParameter"
-          Resource: "*"
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: "secretsmanager:GetSecretValue"
+      Resource: "*"
 
 plugins:
   - serverless-add-api-key
