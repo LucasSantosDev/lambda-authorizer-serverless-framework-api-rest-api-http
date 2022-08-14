@@ -3,7 +3,7 @@ const AWS = require("aws-sdk");
 
 const secretName = "test/lambda-authorizer";
 const client = new AWS.SecretsManager({
-  region: "us-east-1",
+  region: "sa-east-1",
 });
 let secret;
 
