@@ -1,0 +1,54 @@
+service: lambda-authorizer-demo
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  stage: dev
+  lambdaHashingVersion: 20201221
+  # API HTTP
+  httpApi:
+    authorizers:
+      customAuthorizer:
+        type: request
+        functionName: custom-authorizer-http
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action: "ssm:GetParameter"
+          Resource: "*"
+
+plugins:
+  - serverless-add-api-key
+
+custom:
+  apiKeys:
+    dev:
+      - name: dev/api-key-private
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: /hello-rest
+          method: get
+          private: true
+          authorizer: custom-authorizer-rest # API REST
+  hello-http:
+    handler: handler.hello
+    events:
+      - httpApi:
+          path: /hello-http
+          method: get
+          authorizer:
+            name: customAuthorizer
+
+  custom-authorizer-rest:
+    handler: authorizer-rest.handler
+
+  custom-authorizer-http:
+    handler: authorizer-http.handler
