@@ -1,6 +1,6 @@
 ##### X-API-KEY
 
-Minha X-API-KEY server para IDENTIFICAR o CLIENT.
+Minha X-API-KEY serve para IDENTIFICAR o CLIENT.
 
 Ou seja, ela não serve para autorização e sim autenticação.
 

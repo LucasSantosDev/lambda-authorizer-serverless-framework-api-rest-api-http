@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "function:hello": "sls invoke -f hello --path mock.json",
+    "function:hello-http": "sls invoke -f hello-http --path mock.json"
+  },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",
     "serverless-add-api-key": "^4.2.1"

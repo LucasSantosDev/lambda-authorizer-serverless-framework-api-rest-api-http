@@ -18,14 +18,30 @@ provider:
     - Effect: "Allow"
       Action: "secretsmanager:GetSecretValue"
       Resource: "*"
+  tracing:
+    lambda: true
+  environment:
+    NODE_PATH: "./:/opt"
+
+package:
+  exclude:
+    - layes/secretsManager/**
 
 plugins:
   - serverless-add-api-key
+  - serverless-offline
 
 custom:
+  serverless-offline:
+    ignoreJWTSignature: true
   apiKeys:
     dev:
       - name: dev/api-key-private
+
+layers:
+  SecretsManager:
+    path: layers/secretsManager
+    description: "script to handle with AWS SecretsManager"
 
 functions:
   hello:
@@ -44,9 +60,11 @@ functions:
           method: get
           authorizer:
             name: customAuthorizer
-
   custom-authorizer-rest:
     handler: authorizer-rest.handler
-
+    layers:
+      - { Ref: SecretsManagerLambdaLayer }
   custom-authorizer-http:
     handler: authorizer-http.handler
+    layers:
+      - { Ref: SecretsManagerLambdaLayer }
