@@ -9,10 +9,13 @@
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",
-    "serverless-add-api-key": "^4.2.1"
+    "serverless-add-api-key": "^4.2.1",
+    "serverless-api-gateway-throttling": "^2.0.2"
   },
   "devDependencies": {
     "serverless": "^3.21.0",
-    "serverless-offline": "^9.2.0"
+    "serverless-offline": "^9.2.0",
+    "serverless-plugin-aws-alerts": "^1.7.5",
+    "serverless-plugin-canary-deployments": "^0.8.0"
   }
 }

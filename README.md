@@ -31,4 +31,6 @@ https://betterprogramming.pub/how-to-use-custom-authorizer-in-aws-api-gateway-wi
 MUITO IMPORTANTE 👇🏽
 
 https://docs.aws.amazon.com/pt_br/apigateway/latest/developerguide/http-api-vs-rest.html
+
+https://www.serverless.com/plugins/serverless-plugin-canary-deployments
 ```

@@ -18,6 +18,11 @@ provider:
     - Effect: "Allow"
       Action: "secretsmanager:GetSecretValue"
       Resource: "*"
+    - Effect: Allow
+      Action:
+        - codedeploy:*
+      Resource:
+        - "*"
   tracing:
     lambda: true
   environment:
@@ -28,10 +33,19 @@ package:
     - layes/secretsManager/**
 
 plugins:
+  - serverless-plugin-aws-alerts
+  - serverless-plugin-canary-deployments
+  - serverless-api-gateway-throttling
   - serverless-add-api-key
   - serverless-offline
 
 custom:
+  alerts:
+    dashboards: true
+  # They apply to all http endpoints, unless specifically overridden
+  apiGatewayThrottling:
+    maxRequestsPerSecond: 1000
+    maxConcurrentRequests: 500
   serverless-offline:
     ignoreJWTSignature: true
   apiKeys:
@@ -52,6 +66,17 @@ functions:
           method: get
           private: true
           authorizer: custom-authorizer-rest # API REST
+          throttling:
+            maxRequestsPerSecond: 2000
+            maxConcurrentRequests: 1000
+    deploymentSettings:
+      type: Canary10Percent5Minutes
+      alias: Live
+      preTrafficHook: preHook
+      postTrafficHook: postHook
+      alarms:
+        - name: LambdaTestAlarmA
+
   hello-http:
     handler: handler.hello
     events:
@@ -60,11 +85,19 @@ functions:
           method: get
           authorizer:
             name: customAuthorizer
+
   custom-authorizer-rest:
     handler: authorizer-rest.handler
     layers:
       - { Ref: SecretsManagerLambdaLayer }
+
   custom-authorizer-http:
     handler: authorizer-http.handler
     layers:
       - { Ref: SecretsManagerLambdaLayer }
+
+  preHook:
+    handler: hooks.pre
+
+  postHook:
+    handler: hooks.post
